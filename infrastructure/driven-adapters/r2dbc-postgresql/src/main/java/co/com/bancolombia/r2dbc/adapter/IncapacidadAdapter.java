@@ -82,8 +82,8 @@ public class IncapacidadAdapter extends ReactiveAdapterOperations<Incapacidad, I
             if (entity.getEmpleado() != null && entity.getEmpleado().getCedula() != null) {
                 data.setEmpleadoCedula(entity.getEmpleado().getCedula());
             }
-            if (entity.getCie10() != null && entity.getCie10().getIdCIE10() != null) {
-                data.setCie10Codigo(entity.getCie10().getIdCIE10());
+            if (entity.getCie10() != null && entity.getCie10().getCodigo() != null) {
+                data.setCie10Codigo(entity.getCie10().getCodigo());
             }
         }
         return data;
