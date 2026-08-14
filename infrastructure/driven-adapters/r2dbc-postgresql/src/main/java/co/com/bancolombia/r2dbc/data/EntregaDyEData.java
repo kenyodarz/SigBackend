@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
@@ -17,11 +18,18 @@ import java.time.LocalDate;
 @Builder(toBuilder = true)
 @Table("entrega_dye")
 public class EntregaDyEData implements Persistable<String> {
+
     @Id
+    @Column("id_entrega_dye")
     private String idEntregaDyE;
+
+    @Column("fecha_entrega_dye")
     private LocalDate fechaEntregaDyE;
+
     private String descripcion;
     private String tipo;
+
+    @Column("empleado_cedula")
     private String empleadoCedula;
 
     @Transient

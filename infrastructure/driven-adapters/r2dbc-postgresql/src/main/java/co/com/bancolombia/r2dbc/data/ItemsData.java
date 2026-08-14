@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
@@ -15,8 +16,11 @@ import org.springframework.data.relational.core.mapping.Table;
 @Builder(toBuilder = true)
 @Table("items")
 public class ItemsData implements Persistable<String> {
+
     @Id
+    @Column("id_items")
     private String idItems;
+
     private String nombre;
     private String marca;
     private String talla;
