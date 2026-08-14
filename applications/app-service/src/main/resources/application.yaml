@@ -6,7 +6,7 @@ spring:
   devtools:
     add-properties: false
   r2dbc:
-    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:sigcdmtransformadores}
+    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:sig_db}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:postgres}
 management:
@@ -28,7 +28,7 @@ adapters:
   r2dbc:
     host: "${DB_HOST:localhost}"
     port: ${DB_PORT:5432}
-    database: "${DB_NAME:sigcdmtransformadores}"
+    database: "${DB_NAME:sig_db}"
     schema: "${DB_SCHEMA:public}"
     username: "${DB_USER:postgres}"
     password: "${DB_PASSWORD:postgres}"

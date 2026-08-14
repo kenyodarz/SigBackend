@@ -4,15 +4,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
+
+import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
 public class ScalarConfig {
 
-    @Bean
-    public RouterFunction<ServerResponse> scalarRouter() {
-        String html = """
+    private static final String SCALAR_HTML = """
                 <!doctype html>
                 <html>
                   <head>
@@ -29,13 +29,18 @@ public class ScalarConfig {
                 </html>
                 """;
 
-        return RouterFunctions.route()
-                .GET("/scalar", request -> ServerResponse.ok()
+    @Bean
+    public RouterFunction<ServerResponse> scalarRouter() {
+        return route(GET("/scalar"), request ->
+                ServerResponse.ok()
                         .contentType(MediaType.TEXT_HTML)
-                        .bodyValue(html))
-                .GET("/docs", request -> ServerResponse.ok()
+                        .header("Content-Security-Policy", "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:;")
+                        .bodyValue(SCALAR_HTML)
+        ).andRoute(GET("/docs"), request ->
+                ServerResponse.ok()
                         .contentType(MediaType.TEXT_HTML)
-                        .bodyValue(html))
-                .build();
+                        .header("Content-Security-Policy", "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:;")
+                        .bodyValue(SCALAR_HTML)
+        );
     }
 }
