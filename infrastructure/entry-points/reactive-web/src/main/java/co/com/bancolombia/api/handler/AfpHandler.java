@@ -1,0 +1,42 @@
+package co.com.bancolombia.api.handler;
+
+import co.com.bancolombia.model.integrations.Afp;
+import co.com.bancolombia.usecase.AfpUseCase;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.server.ServerRequest;
+import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Mono;
+
+@Component
+@RequiredArgsConstructor
+public class AfpHandler {
+
+    private final AfpUseCase afpUseCase;
+
+    public Mono<ServerResponse> findAll(ServerRequest request) {
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(afpUseCase.findAll(), Afp.class);
+    }
+
+    public Mono<ServerResponse> findById(ServerRequest request) {
+        String id = request.pathVariable("id");
+        return afpUseCase.findById(id)
+                .flatMap(afp -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(afp))
+                .switchIfEmpty(ServerResponse.notFound().build());
+    }
+
+    public Mono<ServerResponse> save(ServerRequest request) {
+        return request.bodyToMono(Afp.class)
+                .flatMap(afpUseCase::save)
+                .flatMap(saved -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(saved));
+    }
+
+    public Mono<ServerResponse> delete(ServerRequest request) {
+        String id = request.pathVariable("id");
+        return afpUseCase.deleteById(id)
+                .then(ServerResponse.noContent().build());
+    }
+}
