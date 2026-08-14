@@ -14,13 +14,26 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
 public class DocumentoHandler {
 
     private final DocumentoUseCase useCase;
+
+    private String extractCedula(ServerRequest request) {
+        if (request.pathVariables().containsKey("cedula")) {
+            return request.pathVariable("cedula");
+        }
+        if (request.pathVariables().containsKey("saveCedula")) {
+            return request.pathVariable("saveCedula");
+        }
+        if (request.pathVariables().containsKey("empCedula")) {
+            return request.pathVariable("empCedula");
+        }
+        return request.pathVariables().values().stream().findFirst().orElse("");
+    }
 
     public Mono<ServerResponse> findAll(ServerRequest request) {
         return ServerResponse.ok()
@@ -36,7 +49,7 @@ public class DocumentoHandler {
     }
 
     public Mono<ServerResponse> findByEmpleado(ServerRequest request) {
-        String cedula = request.pathVariable("cedula");
+        String cedula = extractCedula(request);
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(useCase.findByEmpleadoCedula(cedula), Documento.class);
@@ -49,7 +62,7 @@ public class DocumentoHandler {
     }
 
     public Mono<ServerResponse> saveFile(ServerRequest request) {
-        String cedula = request.pathVariable("cedula");
+        String cedula = extractCedula(request);
         return request.multipartData()
                 .flatMap(partsMap -> {
                     Part archivoPart = partsMap.getFirst("archivo");
@@ -78,7 +91,7 @@ public class DocumentoHandler {
                                         .empleado(emp)
                                         .tipo(tipo)
                                         .nombre(nombre)
-                                        .createAt(new Date())
+                                        .createAt(LocalDateTime.now())
                                         .archivo(bytes)
                                         .build();
                                 return useCase.save(doc);

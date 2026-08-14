@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -16,6 +16,6 @@ public class Documento {
     private Empleado empleado;
     private String tipo;
     private String nombre;
-    private Date createAt;
+    private LocalDateTime createAt;
     private byte[] archivo;
 }

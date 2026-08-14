@@ -10,7 +10,7 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -30,7 +30,7 @@ public class DocumentoData implements Persistable<String> {
     private String nombre;
 
     @Column("create_at")
-    private Date createAt;
+    private LocalDateTime createAt;
 
     private byte[] archivo;
 

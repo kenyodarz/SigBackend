@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Repository
@@ -61,7 +61,7 @@ public class DocumentoAdapter extends ReactiveAdapterOperations<Documento, Docum
     public Mono<Documento> save(Documento entity) {
         DocumentoData data = toData(entity);
         if (data.getCreateAt() == null) {
-            data.setCreateAt(new Date());
+            data.setCreateAt(LocalDateTime.now());
         }
         return saveData(data).flatMap(this::enrichDocumento);
     }

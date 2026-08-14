@@ -314,8 +314,8 @@ public class RouterRest {
 
                 .andRoute(GET("/api/documentos"), documentoHandler::findAll)
                 .andRoute(GET("/api/documentos/all"), documentoHandler::findAll)
-                .andRoute(POST("/api/documentos/save-file/{cedula}"), documentoHandler::saveFile)
-                .andRoute(GET("/api/documentos/empleado/{cedula}"), documentoHandler::findByEmpleado)
+                .andRoute(POST("/api/documentos/save-file/{saveCedula}"), documentoHandler::saveFile)
+                .andRoute(GET("/api/documentos/empleado/{empCedula}"), documentoHandler::findByEmpleado)
                 .andRoute(GET("/api/documentos/pdf/{id}"), documentoHandler::downloadPdf)
                 .andRoute(GET("/api/documentos/{id}"), documentoHandler::findById)
                 .andRoute(POST("/api/documentos"), documentoHandler::save)
