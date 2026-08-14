@@ -23,7 +23,8 @@ management:
       probes:
         enabled: true
 cors:
-  allowed-origins: "http://localhost:4200,http://localhost:8080,http://localhost:3000,http://localhost:5173"
+  allowed-origin: "${CORS_ORIGINS:${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:8080}}"
+
 sig:
   app:
     jwtSecret: ${JWT_SECRET:w7VhSd82F9ka09nH28dm92js8aLs991jsa88721KFs}
