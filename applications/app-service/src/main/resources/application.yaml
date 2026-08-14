@@ -1,14 +1,26 @@
-##Spring Configuration
 server:
   port: 8080
 spring:
   application:
-    name: SigBackend
+    name: "SigBackend"
   devtools:
     add-properties: false
-  h2:
-    console:
-      enabled: true
-      path: /h2
-  profiles:
-    include:
+  r2dbc:
+    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:sig_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+cors:
+  allowed-origins: "http://localhost:4200,http://localhost:8080,http://localhost:3000,http://localhost:5173"
+sig:
+  app:
+    jwtSecret: ${JWT_SECRET:sigSecretKeyForJwtTokenAuthenticationWhichMustBeAtLeast256BitsLongForHMACSHA256}
+    jwtExpirationMs: 86400000
