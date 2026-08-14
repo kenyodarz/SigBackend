@@ -81,6 +81,12 @@ CREATE TABLE IF NOT EXISTS capacitaciones (
     fecha DATE
 );
 
+CREATE TABLE IF NOT EXISTS capacitaciones_empleados (
+    capacitacion_id VARCHAR(36),
+    empleado_cedula VARCHAR(50),
+    PRIMARY KEY (capacitacion_id, empleado_cedula)
+);
+
 CREATE TABLE IF NOT EXISTS contratos (
     id_contrato VARCHAR(36) PRIMARY KEY,
     tipo_contrato VARCHAR(50),

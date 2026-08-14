@@ -1,6 +1,7 @@
 package co.com.bancolombia.api.handler;
 
 import co.com.bancolombia.model.Capacitacion;
+import co.com.bancolombia.model.Empleado;
 import co.com.bancolombia.usecase.CapacitacionUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -38,5 +39,27 @@ public class CapacitacionHandler {
         String id = request.pathVariable("id");
         return useCase.deleteById(id)
                 .then(ServerResponse.noContent().build());
+    }
+
+    public Mono<ServerResponse> asignarEmpleados(ServerRequest request) {
+        String id = request.pathVariable("id");
+        return request.bodyToFlux(Empleado.class)
+                .collectList()
+                .flatMap(empleados -> useCase.asignarEmpleados(id, empleados))
+                .flatMap(updated -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(updated));
+    }
+
+    public Mono<ServerResponse> eliminarEmpleado(ServerRequest request) {
+        String id = request.pathVariable("id");
+        return request.bodyToMono(Empleado.class)
+                .flatMap(empleado -> useCase.eliminarEmpleado(id, empleado))
+                .flatMap(updated -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(updated));
+    }
+
+    public Mono<ServerResponse> findByEmpleado(ServerRequest request) {
+        String cedula = request.pathVariable("cedula");
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(useCase.buscarPorEmpleado(cedula), Capacitacion.class);
     }
 }
