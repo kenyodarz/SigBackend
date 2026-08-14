@@ -16,6 +16,7 @@ import co.com.bancolombia.api.handler.EmpleadoHandler;
 import co.com.bancolombia.api.handler.EntregaDyEHandler;
 import co.com.bancolombia.api.handler.EpsHandler;
 import co.com.bancolombia.api.handler.ExamenHandler;
+import co.com.bancolombia.api.handler.FotoHandler;
 import co.com.bancolombia.api.handler.IncapacidadHandler;
 import co.com.bancolombia.api.handler.ItemHandler;
 import co.com.bancolombia.api.handler.RecommendationHandler;
@@ -24,6 +25,7 @@ import co.com.bancolombia.model.Capacitacion;
 import co.com.bancolombia.model.Contrato;
 import co.com.bancolombia.model.Documento;
 import co.com.bancolombia.model.Empleado;
+import co.com.bancolombia.model.Foto;
 import co.com.bancolombia.model.EntregaDyE;
 import co.com.bancolombia.model.Examen;
 import co.com.bancolombia.model.Incapacidad;
@@ -198,10 +200,16 @@ public class RouterRest {
             AfpHandler afpHandler,
             CajaComFamiliarHandler cajaComFamiliarHandler,
             ItemHandler itemHandler,
-            CIE10Handler cie10Handler
+            CIE10Handler cie10Handler,
+            FotoHandler fotoHandler
     ) {
         return route(POST("/api/auth/signin"), authHandler::signin)
                 .andRoute(POST("/api/auth/signup"), authHandler::signup)
+
+                .andRoute(POST("/api/fotos"), fotoHandler::save)
+                .andRoute(POST("/api/fotos/save"), fotoHandler::save)
+                .andRoute(GET("/api/fotos/{id}"), fotoHandler::findById)
+                .andRoute(GET("/api/fotos/image/{id}"), fotoHandler::findById)
 
                 .andRoute(GET("/api/empleados"), empleadoHandler::findAll)
                 .andRoute(GET("/api/empleados/all"), empleadoHandler::findAll)
