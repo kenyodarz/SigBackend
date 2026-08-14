@@ -161,6 +161,12 @@ CREATE TABLE IF NOT EXISTS items (
     color VARCHAR(50)
 );
 
+CREATE TABLE IF NOT EXISTS entrega_dye_items (
+    entrega_id VARCHAR(36),
+    item_id VARCHAR(36),
+    PRIMARY KEY (entrega_id, item_id)
+);
+
 -- Seed Initial Roles if not exists
 INSERT INTO roles (id, name) VALUES ('1', 'ROLE_USER') ON CONFLICT DO NOTHING;
 INSERT INTO roles (id, name) VALUES ('2', 'ROLE_ADMIN') ON CONFLICT DO NOTHING;

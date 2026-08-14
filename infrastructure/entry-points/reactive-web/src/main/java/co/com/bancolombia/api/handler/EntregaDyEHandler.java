@@ -1,6 +1,7 @@
 package co.com.bancolombia.api.handler;
 
 import co.com.bancolombia.model.EntregaDyE;
+import co.com.bancolombia.model.integrations.Items;
 import co.com.bancolombia.usecase.EntregaDyEUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -38,5 +39,22 @@ public class EntregaDyEHandler {
         String id = request.pathVariable("id");
         return useCase.deleteById(id)
                 .then(ServerResponse.noContent().build());
+    }
+
+    public Mono<ServerResponse> agregarItems(ServerRequest request) {
+        String id = request.pathVariable("id");
+        return request.bodyToFlux(Items.class)
+                .collectList()
+                .flatMap(items -> useCase.agregarItems(id, items))
+                .flatMap(updated -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(updated))
+                .switchIfEmpty(useCase.findById(id).flatMap(e -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(e)));
+    }
+
+    public Mono<ServerResponse> eliminarItem(ServerRequest request) {
+        String id = request.pathVariable("id");
+        return request.bodyToMono(Items.class)
+                .flatMap(item -> useCase.eliminarItem(id, item))
+                .flatMap(updated -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(updated))
+                .switchIfEmpty(useCase.findById(id).flatMap(e -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(e)));
     }
 }
