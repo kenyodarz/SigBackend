@@ -5,6 +5,10 @@ spring:
     name: "SigBackend"
   devtools:
     add-properties: false
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
   r2dbc:
     url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:sig_db}
     username: ${DB_USER:postgres}

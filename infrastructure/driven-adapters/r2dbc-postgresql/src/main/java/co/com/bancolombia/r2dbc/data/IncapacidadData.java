@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
@@ -14,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @Table("incapacidades")
-public class IncapacidadData {
+public class IncapacidadData implements Persistable<String> {
     @Id
     private String idIncapacidad;
     private LocalDate fechaInicio;
@@ -24,4 +26,18 @@ public class IncapacidadData {
     private String cie10Codigo;
     private String empleadoCedula;
     private String estado;
+
+    @Transient
+    @Builder.Default
+    private boolean isNew = true;
+
+    @Override
+    public String getId() {
+        return idIncapacidad;
+    }
+
+    @Override
+    public boolean isNew() {
+        return isNew || idIncapacidad == null;
+    }
 }

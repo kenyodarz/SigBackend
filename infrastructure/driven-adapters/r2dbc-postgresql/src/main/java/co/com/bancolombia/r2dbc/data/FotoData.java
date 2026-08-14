@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
@@ -12,8 +14,22 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @Table("fotos")
-public class FotoData {
+public class FotoData implements Persistable<String> {
     @Id
     private String idFoto;
     private byte[] foto;
+
+    @Transient
+    @Builder.Default
+    private boolean isNew = true;
+
+    @Override
+    public String getId() {
+        return idFoto;
+    }
+
+    @Override
+    public boolean isNew() {
+        return isNew || idFoto == null;
+    }
 }
