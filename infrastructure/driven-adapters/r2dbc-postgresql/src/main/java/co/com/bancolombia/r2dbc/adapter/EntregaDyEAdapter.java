@@ -113,6 +113,7 @@ public class EntregaDyEAdapter extends ReactiveAdapterOperations<EntregaDyE, Ent
         return databaseClient.sql("DELETE FROM entrega_dye_items WHERE entrega_id = :entregaId AND item_id = :itemId")
                 .bind("entregaId", entregaId)
                 .bind("itemId", itemId)
+                .then()
                 .then(findById(entregaId));
     }
 
