@@ -331,6 +331,17 @@ public class RouterRest {
                 .andRoute(DELETE("/api/entrega-dye/delete/{id}"), entregaDyEHandler::delete)
                 .andRoute(GET("/api/entrega-dye/delete/{id}"), entregaDyEHandler::delete)
 
+                .andRoute(GET("/api/entregas"), entregaDyEHandler::findAll)
+                .andRoute(GET("/api/entregas/all"), entregaDyEHandler::findAll)
+                .andRoute(GET("/api/entregas/{id}"), entregaDyEHandler::findById)
+                .andRoute(POST("/api/entregas"), entregaDyEHandler::save)
+                .andRoute(POST("/api/entregas/save"), entregaDyEHandler::save)
+                .andRoute(PUT("/api/entregas"), entregaDyEHandler::save)
+                .andRoute(PUT("/api/entregas/save"), entregaDyEHandler::save)
+                .andRoute(DELETE("/api/entregas/{id}"), entregaDyEHandler::delete)
+                .andRoute(DELETE("/api/entregas/delete/{id}"), entregaDyEHandler::delete)
+                .andRoute(GET("/api/entregas/delete/{id}"), entregaDyEHandler::delete)
+
                 .andRoute(GET("/api/examenes"), examenHandler::findAll)
                 .andRoute(GET("/api/examenes/all"), examenHandler::findAll)
                 .andRoute(GET("/api/examenes/{id}"), examenHandler::findById)

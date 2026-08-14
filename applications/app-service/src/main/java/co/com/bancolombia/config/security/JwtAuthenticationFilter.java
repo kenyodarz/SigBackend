@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter implements WebFilter {
                                 .contextWrite(ReactiveSecurityContextHolder.withAuthentication(auth));
                     })
                     .onErrorResume(e -> {
-                        log.error("Error al autenticar usuario desde JWT: {}", e.getMessage());
+                        log.error("Error al procesar la solicitud en la cadena de seguridad [{}]: {}", exchange.getRequest().getPath(), e.getMessage());
                         return chain.filter(exchange);
                     });
         }
