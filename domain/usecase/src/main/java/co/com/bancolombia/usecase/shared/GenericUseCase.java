@@ -6,7 +6,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
-public class GenericUseCase<T, ID> {
+public abstract class GenericUseCase<T, ID> {
 
     private final CrudGateway<T, ID> gateway;
 

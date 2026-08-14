@@ -6,7 +6,7 @@ spring:
   devtools:
     add-properties: false
   r2dbc:
-    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:sig_db}
+    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:sigcdmtransformadores}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:postgres}
 management:
@@ -22,5 +22,13 @@ cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080,http://localhost:3000,http://localhost:5173"
 sig:
   app:
-    jwtSecret: ${JWT_SECRET:sigSecretKeyForJwtTokenAuthenticationWhichMustBeAtLeast256BitsLongForHMACSHA256}
+    jwtSecret: ${JWT_SECRET:w7VhSd82F9ka09nH28dm92js8aLs991jsa88721KFs}
     jwtExpirationMs: 86400000
+adapters:
+  r2dbc:
+    host: "${DB_HOST:localhost}"
+    port: ${DB_PORT:5432}
+    database: "${DB_NAME:sigcdmtransformadores}"
+    schema: "${DB_SCHEMA:public}"
+    username: "${DB_USER:postgres}"
+    password: "${DB_PASSWORD:postgres}"
