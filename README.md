@@ -1,47 +1,112 @@
-# Proyecto Base Implementando Clean Architecture
+# Sig-Backend
 
-## Antes de Iniciar
+Backend reactivo para la gestión integral de seguridad industrial, salud ocupacional y administración de personal, desarrollado en Java bajo el patrón de **Arquitectura Hexagonal (Clean Architecture)** utilizando el **Scaffold Clean Architecture de Bancolombia**.
 
-Empezaremos por explicar los diferentes componentes del proyectos y partiremos de los componentes externos, continuando con los componentes core de negocio (dominio) y por último el inicio y configuración de la aplicación.
+---
 
-Lee el artículo [Clean Architecture — Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)
+## 🚀 Stack Tecnológico
 
-# Arquitectura
+- **Lenguaje:** Java 25
+- **Framework Principal:** Spring Boot 4 Reactivo (Spring WebFlux)
+- **Persistencia Reactiva:** Spring Data R2DBC + PostgreSQL
+- **Seguridad:** Spring Security WebFlux + JWT (JJWT `0.13.0`)
+- **Documentación de API:** Springdoc OpenAPI `2.8.5` + **Scalar API Reference** (`@scalar/api-reference`)
+- **Programación Reactiva:** Project Reactor (`Mono`, `Flux`)
+- **Herramientas:** Lombok, Gradle
 
-![Clean Architecture](https://miro.medium.com/max/1400/1*ZdlHz8B0-qu9Y-QO3AXR_w.png)
+---
 
-## Domain
+## 🏛️ Arquitectura del Proyecto
 
-Es el módulo más interno de la arquitectura, pertenece a la capa del dominio y encapsula la lógica y reglas del negocio mediante modelos y entidades del dominio.
+El proyecto está estructurado en Gradle multimódulo bajo la Arquitectura Hexagonal de Bancolombia:
 
-## Usecases
+```
+Sig-Backend/
+├── domain/
+│   ├── model/                     # Modelos y entidades de negocio puras (User, Empleado, etc.) y Puertos (Gateways)
+│   └── usecase/                   # Casos de uso de negocio puros (UserUseCase, EmpleadoUseCase, etc.)
+├── infrastructure/
+│   ├── driven-adapters/
+│   │   └── r2dbc-postgresql/      # Adaptador de persistencia reactiva R2DBC + PostgreSQL
+│   └── entry-points/
+│       └── reactive-web/          # Puntos de entrada HTTP con Router Functions, Handlers y Scalar API Reference
+└── applications/
+    └── app-service/               # Módulo ejecutable Spring Boot, SecurityConfig y schema.sql
+```
 
-Este módulo gradle perteneciente a la capa del dominio, implementa los casos de uso del sistema, define lógica de aplicación y reacciona a las invocaciones desde el módulo de entry points, orquestando los flujos hacia el módulo de entities.
+---
 
-## Infrastructure
+## 📖 Documentación de APIs e Interfaz Interactiva
 
-### Helpers
+El proyecto integra **Scalar API Reference** para probar y explorar la API de forma visual e interactiva:
 
-En el apartado de helpers tendremos utilidades generales para los Driven Adapters y Entry Points.
+- **Interfaz de Scalar:** `http://localhost:8080/scalar` o `http://localhost:8080/docs`
+- **Especificación OpenAPI (JSON):** `http://localhost:8080/v3/api-docs`
 
-Estas utilidades no están arraigadas a objetos concretos, se realiza el uso de generics para modelar comportamientos
-genéricos de los diferentes objetos de persistencia que puedan existir, este tipo de implementaciones se realizan
-basadas en el patrón de diseño [Unit of Work y Repository](https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006)
+---
 
-Estas clases no puede existir solas y debe heredarse su compartimiento en los **Driven Adapters**
+## 🔐 Autenticación JWT (`0.13.0`)
 
-### Driven Adapters
+El módulo de seguridad incluye un flujo de autenticación reactivo basado en tokens JWT firmados mediante la librería JJWT versión `0.13.0`.
 
-Los driven adapter representan implementaciones externas a nuestro sistema, como lo son conexiones a servicios rest,
-soap, bases de datos, lectura de archivos planos, y en concreto cualquier origen y fuente de datos con la que debamos
-interactuar.
+### Endpoints de Autenticación
 
-### Entry Points
+#### 1. Registro de Usuario (`POST /api/auth/signup`)
+```bash
+curl http://localhost:8080/api/auth/signup \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "username": "admin",
+    "name": "ADMINISTRADOR",
+    "email": "admin@test.com",
+    "password": "admin",
+    "role": ["user", "admin"]
+  }'
+```
 
-Los entry points representan los puntos de entrada de la aplicación o el inicio de los flujos de negocio.
+#### 2. Inicio de Sesión (`POST /api/auth/signin`)
+```bash
+curl http://localhost:8080/api/auth/signin \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "username": "admin",
+    "password": "admin"
+  }'
+```
 
-## Application
+---
 
-Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
+## 📦 Módulos de Dominio Expuestos
 
-**Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
+La aplicación expone Router Functions para los siguientes módulos de negocio:
+
+- `/api/auth` (Autenticación y Registro)
+- `/api/empleados` (Gestión de Empleados)
+- `/api/capacitaciones` (Capacitaciones)
+- `/api/contratos` (Contratos laborales)
+- `/api/documentos` (Documentos adjuntos)
+- `/api/entrega-dye` (Entrega de dotación y elementos)
+- `/api/examenes` (Exámenes médicos)
+- `/api/incapacidades` (Incapacidades laborales)
+- `/api/recomendaciones` (Recomendaciones médicas y seguimiento)
+- `/api/vacaciones` (Solicitud y control de vacaciones)
+
+---
+
+## 🛠️ Compilación y Ejecución
+
+### Requisitos Previos
+- Java 25 JDK
+- PostgreSQL (Base de datos `sig_db`)
+
+### Compilación y Pruebas
+```bash
+.\gradlew build
+```
+
+### Ejecutar Servidor Localmente
+```bash
+.\gradlew :app-service:bootRun
+```
