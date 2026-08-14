@@ -1,6 +1,6 @@
 package co.com.bancolombia.api.handler;
 
-import co.com.bancolombia.model.Item;
+import co.com.bancolombia.model.integrations.Items;
 import co.com.bancolombia.usecase.ItemUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -18,7 +18,7 @@ public class ItemHandler {
     public Mono<ServerResponse> findAll(ServerRequest request) {
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(itemUseCase.findAll(), Item.class);
+                .body(itemUseCase.findAll(), Items.class);
     }
 
     public Mono<ServerResponse> findById(ServerRequest request) {
@@ -29,7 +29,7 @@ public class ItemHandler {
     }
 
     public Mono<ServerResponse> save(ServerRequest request) {
-        return request.bodyToMono(Item.class)
+        return request.bodyToMono(Items.class)
                 .flatMap(itemUseCase::save)
                 .flatMap(saved -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(saved));
     }

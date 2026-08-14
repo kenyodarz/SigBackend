@@ -1,6 +1,6 @@
 package co.com.bancolombia.api.handler;
 
-import co.com.bancolombia.model.integrations.Cie10;
+import co.com.bancolombia.model.integrations.CIE10;
 import co.com.bancolombia.usecase.CIE10UseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -18,7 +18,7 @@ public class CIE10Handler {
     public Mono<ServerResponse> findAll(ServerRequest request) {
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(cie10UseCase.findAll(), Cie10.class);
+                .body(cie10UseCase.findAll(), CIE10.class);
     }
 
     public Mono<ServerResponse> findById(ServerRequest request) {
@@ -29,7 +29,7 @@ public class CIE10Handler {
     }
 
     public Mono<ServerResponse> save(ServerRequest request) {
-        return request.bodyToMono(Cie10.class)
+        return request.bodyToMono(CIE10.class)
                 .flatMap(cie10UseCase::save)
                 .flatMap(saved -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(saved));
     }
