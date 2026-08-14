@@ -11,11 +11,13 @@ import co.com.bancolombia.api.handler.ExamenHandler;
 import co.com.bancolombia.api.handler.IncapacidadHandler;
 import co.com.bancolombia.api.handler.RecommendationHandler;
 import co.com.bancolombia.api.handler.VacacionesHandler;
+import co.com.bancolombia.api.security.JwtUtils;
 import co.com.bancolombia.usecase.EmpleadoUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -42,6 +44,12 @@ class ConfigTest {
 
     @Autowired
     private WebTestClient webTestClient;
+
+    @MockitoBean
+    private JwtUtils jwtUtils;
+
+    @MockitoBean
+    private PasswordEncoder passwordEncoder;
 
     @MockitoBean
     private EmpleadoUseCase empleadoUseCase;
